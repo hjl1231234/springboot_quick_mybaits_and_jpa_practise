@@ -1,12 +1,15 @@
-package com.leetcode;
+package com.leetcode.design_pattern;
 
 import org.junit.Test;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -35,7 +38,7 @@ public class ExampleUnitTest {
 
         try {
             //反射得到类,forname相比于classload直接进行了静态链接步骤,classlaod还需要多进行一次true确认
-            Class clazz = Class.forName("com.leetcode.ExampleUnitTest");
+            Class clazz = Class.forName("com.leetcode.design_pattern.ExampleUnitTest");
             //通过反射类反射拿到方法,然后进行调用.可能出现找不到方法异常和找到方法无法调用异常,不能实例化异常.
             //invoke中的参数是object类型.  class类型实例化后为object类型.
             clazz.getDeclaredMethod("addition_isCorrect").invoke(clazz.newInstance());
@@ -56,7 +59,7 @@ public class ExampleUnitTest {
         ClassLoader classLoaderParent = classLoaderSon.getParent();
 
         try {
-            Class clazz2 = classLoaderGrandSon.loadClass("com.leetcode.ExampleUnitTest");
+            Class clazz2 = classLoaderGrandSon.loadClass("com.leetcode.design_pattern.ExampleUnitTest");
             ExampleUnitTest o1 = (ExampleUnitTest) clazz2.newInstance();
             ExampleUnitTest o2 = o1.getClass().newInstance();
 //            System.out.println("显然o1 o2不是同一个对象    " + o1 + "  " + o2);
@@ -67,7 +70,7 @@ public class ExampleUnitTest {
             /**
              * 上面两句和forname等价
              */
-            Class clazz3 = Class.forName("com.leetcode.SingletonOne");
+            Class clazz3 = Class.forName("com.leetcode.design_pattern.SingletonOne");
             /**
              Object o3_1 = clazz3.newInstance();单例模式无效
              面对private必须用constructor和setaccessible
@@ -180,8 +183,8 @@ public class ExampleUnitTest {
         invoker.setOffCommands(commandOn, 1);
         invoker.setOffCommands(commandOff, 2);
 
-        invoker.onButtonWasPushed(1);
-        invoker.offButtonWasPushed(1);
+//        invoker.onButtonWasPushed(1);
+//        invoker.offButtonWasPushed(1);
 
     }
 
@@ -196,6 +199,73 @@ public class ExampleUnitTest {
     }
 
 
+    @Test
+    public void testPriorityQueue() {
+        PriorityQueue<Recognition> priorityQueue = new PriorityQueue<Recognition>(new Comparator<Recognition>() {
+            @Override
+            public int compare(Recognition o1, Recognition o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+        Recognition recognition1 = new Recognition("1", "b1", Float.valueOf("1"), true);
+        Recognition recognition2 = new Recognition("2", "a2", Float.valueOf("2"), true);
+        Recognition recognition3 = new Recognition("3", "a3", Float.valueOf("3"), true);
+//        System.out.println(priorityQueue.comparator().compare(recognition2, recognition1));
+        priorityQueue.add(recognition2);
+        priorityQueue.add(recognition2);
+        priorityQueue.add(recognition1);
+        priorityQueue.add(recognition3);
+//        System.out.println(priorityQueue);
+//        while (!priorityQueue.isEmpty()) {
+//            System.out.print(priorityQueue.poll().toString());
+//        }
+    }
+}
+
+class Recognition {
+    private final String id;
+    private final String title;
+    private final boolean quant;
+    private final Float confidence;
+
+    public Recognition(
+            final String id, final String title, final Float confidence, final boolean quant) {
+        this.id = id;
+        this.title = title;
+        this.confidence = confidence;
+        this.quant = quant;
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Float getConfidence() {
+        return confidence;
+    }
+
+    @Override
+    public String toString() {
+        String resultString = "";
+        if (id != null) {
+            resultString += "[" + id + "] ";
+        }
+
+        if (title != null) {
+            resultString += title + " ";
+        }
+
+        if (confidence != null) {
+            resultString += String.format("(%.1f%%) ", confidence * 100.0f);
+        }
+
+        return resultString.trim();
+    }
 }
 
 /**
@@ -578,6 +648,5 @@ class Outer {
     class Dog {
         public String name = "dog";
     }
-
 }
 
