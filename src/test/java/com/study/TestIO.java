@@ -1,4 +1,4 @@
-package temp_practise;
+package com.study;
 
 import java.io.*;
 import java.util.Scanner;
@@ -25,21 +25,29 @@ public class TestIO {
     public static void main(String[] args) throws IOException {
 
 
-        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+//        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+
+        FileInputStream fileInputStream = new FileInputStream(LearnIO.WHERE_GBK);
+//        FileOutputStream fileOutputStream = new FileOutputStream(LearnIO.WHERE_OUT);
+        FileWriter fileWriter=new FileWriter(LearnIO.WHERE_OUT);
+
+
+
         int str = 0;
+        byte[] bytes = new byte[256];
         try {
+            while ((str = fileInputStream.read()) != -1) {
+//                System.out.printf((char)str+" ");
+//                fileOutputStream.write((char)str);
+                fileWriter.write((char)str);
+                System.out.println(str);
 
-
-            while((str = inputStreamReader.read())!=-1){
-                System.out.printf((char)str+" ");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println(str);
-
-
 
 
         /**
@@ -67,23 +75,6 @@ public class TestIO {
 //        while (!sc.hasNext("n+")) {
 //            System.out.println(sc.next());
 //        }
-
-
-/**
- *
- *
- */
-
-
-//        Scanner scannerObj = new Scanner(System.in);
-//        for(int i = 1; scannerObj.hasNext(); i++){
-//            System.out.println(i + ": " + scannerObj.next());
-//            System.out.println("Has next line: " + scannerObj.hasNextLine());
-//            System.out.println("-------------");
-//            System.out.println("Has next: " + scannerObj.hasNext());
-//        }
-//        System.out.println();
-//        scannerObj.close();
 
 
 /**

@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LearnIO {
+    public static final String WHERE = "src/where.txt";
+    public static final String WHERE_GBK = "src/whereGBK.txt";
+    public static final String WHERE_OUT = "src/where_out.txt";
+
+
     @Test
     public void testGetBytes() {
         String str1 = "中文";
@@ -31,7 +36,6 @@ public class LearnIO {
         String objectFile = "a1";
 
 
-
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(objectFile));
         objectOutputStream.writeObject(a1);
 
@@ -40,8 +44,7 @@ public class LearnIO {
         System.out.println(a2);
 
 
-
-        BufferedReader bufferedReader=new BufferedReader(new FileReader("src/where.txt"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("src/where.txt"));
 //        BufferedReader bufferedReader = new BufferedReader(new FileReader("./src/where.txt"));
         String line = "";
         while ((line = bufferedReader.readLine()) != null) {
@@ -49,24 +52,17 @@ public class LearnIO {
         }
 
 
-
-        BufferedInputStream bufferedInputStream=new BufferedInputStream(new FileInputStream("src/where.txt"));
-        int t=0;
-        while((t=bufferedInputStream.read())!=-1){
-            System.out.println((char)t);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("src/where.txt"));
+        int t = 0;
+        while ((t = bufferedInputStream.read()) != -1) {
+            System.out.println((char) t);
 
         }
-
-
-
-
 
 
         //斜杠目录究竟是什么东西？可能是转义 object不向磁盘写可以吗？不行
         A aBar = new A(456, "abc");
         A aDefault = new A(789, "abc");
-
-
 
 
     }
@@ -98,8 +94,7 @@ public class LearnIO {
             System.out.println(line);
         }
         br.close();
-        }
-
+    }
 
 
     //    ServerSocket serverSocket;
@@ -147,7 +142,6 @@ public class LearnIO {
     @Test
     public void testByteArrayInputStream() throws IOException, ClassNotFoundException {
         A aByteArrayInputStream = new A(777, "abc");
-
 
 
         String str = "HELLO    WORLD!";        // 定义一个字符串，全部由大写字母组成
