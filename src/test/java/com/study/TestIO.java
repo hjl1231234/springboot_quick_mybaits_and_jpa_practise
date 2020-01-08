@@ -26,20 +26,35 @@ public class TestIO {
 
 
 //        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
-
-        FileInputStream fileInputStream = new FileInputStream(LearnIO.WHERE_GBK);
 //        FileOutputStream fileOutputStream = new FileOutputStream(LearnIO.WHERE_OUT);
-        FileWriter fileWriter=new FileWriter(LearnIO.WHERE_OUT);
 
+//        FileInputStream fileInputStream = new FileInputStream(LearnIO.WHERE_GBK);
+        FileInputStream fileInputStream = new FileInputStream(LearnIO.WHERE_GBK);
+
+
+//        FileReader fileReader = new FileReader(LearnIO.WHERE_GBK);
+//        FileWriter fileWriter = new FileWriter(LearnIO.WHERE_OUT);
+
+
+//        BufferedReader bufferedReader=new BufferedReader(new FileReader(LearnIO.WHERE_GBK));
+//        BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(LearnIO.WHERE_OUT));
+
+        InputStreamReader inputStreamReader=new InputStreamReader(new FileInputStream(LearnIO.WHERE_GBK),"gbk");
+        OutputStreamWriter outputStreamWriter=new OutputStreamWriter(new FileOutputStream(LearnIO.WHERE_OUT),"utf8");
 
 
         int str = 0;
         byte[] bytes = new byte[256];
+
         try {
-            while ((str = fileInputStream.read()) != -1) {
+            while ((str = inputStreamReader.read()) != -1) {
 //                System.out.printf((char)str+" ");
 //                fileOutputStream.write((char)str);
-                fileWriter.write((char)str);
+//                fileWriter.write((char) str);
+//                fileWriter.flush();
+
+                outputStreamWriter.write(str);
+                outputStreamWriter.flush();
                 System.out.println(str);
 
             }
