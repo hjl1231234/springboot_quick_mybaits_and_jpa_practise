@@ -1,7 +1,6 @@
-package com.study;
+package com.studyIO;
 
 import java.io.*;
-import java.util.Scanner;
 
 /**
  * 对于scanner之类的总结，终于清楚版
