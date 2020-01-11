@@ -1,8 +1,6 @@
-package com.study;
+package com.studyIO;
 
-import com.fasterxml.jackson.databind.ObjectReader;
 import org.junit.Test;
-import sun.nio.cs.ext.GBK;
 
 import java.io.*;
 import java.net.*;
@@ -10,11 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LearnIO {
+    public static final String WHERE = "src/where.txt";
+    public static final String WHERE_GBK = "src/whereGBK.txt";
+    public static final String WHERE_OUT = "src/where_out.txt";
+
+
     @Test
     public void testGetBytes() {
         String str1 = "中文";
 
-        byte[] bytes = new byte[0];
+        byte[] bytes;
         try {
             bytes = str1.getBytes("utf8");
             System.out.println(bytes);
@@ -30,6 +33,7 @@ public class LearnIO {
         A a1 = new A(123, "abc");
         String objectFile = "a1";
 
+
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(objectFile));
         objectOutputStream.writeObject(a1);
 
@@ -37,32 +41,26 @@ public class LearnIO {
         A a2 = (A) objectInputStream.readObject();
         System.out.println(a2);
 
-//        BufferedReader bufferedReader=new BufferedReader(new FileReader("src/where.txt"));
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("./src/where.txt"));
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("src/where.txt"));
+//        BufferedReader bufferedReader = new BufferedReader(new FileReader("./src/where.txt"));
         String line = "";
         while ((line = bufferedReader.readLine()) != null) {
             System.out.println(line);
         }
 
-        //斜杠目录究竟是什么东西？ object不向磁盘写可以吗？
+
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("src/where.txt"));
+        int t = 0;
+        while ((t = bufferedInputStream.read()) != -1) {
+            System.out.println((char) t);
+
+        }
+
+
+        //斜杠目录究竟是什么东西？可能是转义 object不向磁盘写可以吗？不行
         A aBar = new A(456, "abc");
         A aDefault = new A(789, "abc");
-
-        objectOutputStream = new ObjectOutputStream(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-        });
-        objectOutputStream.writeObject(aBar);
-
-
-        objectInputStream= new ObjectInputStream(new URL("http://www.baidu.com").openStream());
-        System.out.println(objectInputStream.readObject());
-
-        objectOutputStream.close();
-        objectInputStream.close();
-
 
 
     }
@@ -88,42 +86,16 @@ public class LearnIO {
         InputStreamReader isr = new InputStreamReader(is, "utf-8");
 
         /* 提供缓存功能 */
-//        BufferedReader br = new BufferedReader(isr);
-//        String line;
-//        while ((line = br.readLine()) != null) {
-//            System.out.println(line);
-//        }
-//        br.close();
-
-        int line;
-        Byte[] bytes=new Byte[1024];
-        while ((line=isr.read())!=-1){
-
-//            System.out.println(isr.);
+        BufferedReader br = new BufferedReader(isr);
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
         }
-
-    }
-
-    @Test
-    public void testDataInputStream() throws IOException {
-//        DataInputStream in = new DataInputStream(new FileInputStream("test.txt"));
-//        DataOutputStream out = new DataOutputStream(new  FileOutputStream("test1.txt"));
-//        BufferedReader d  = new BufferedReader(new InputStreamReader(in));
-
-        BufferedReader d=new BufferedReader(new InputStreamReader(new FileInputStream("test.txt"),"utf8"));
-        String count;
-        BufferedWriter out=new BufferedWriter(new FileWriter("test1.txt"));
-        while((count = d.readLine()) != null){
-            String u = count.toUpperCase();
-            System.out.println(u);
-            out.write(u + "  ,");
-        }
-        d.close();
-//        out.close();
+        br.close();
     }
 
 
-//    ServerSocket serverSocket;
+    //    ServerSocket serverSocket;
 //
 //    {
 //        try {
@@ -163,6 +135,27 @@ public class LearnIO {
 //        response = processRequest(request);
 //        out.println(response);
 //    }
+
+
+    @Test
+    public void testByteArrayInputStream() throws IOException, ClassNotFoundException {
+        A aByteArrayInputStream = new A(777, "abc");
+
+
+        String str = "HELLO    WORLD!";        // 定义一个字符串，全部由大写字母组成
+        ByteArrayInputStream bis = new ByteArrayInputStream(str.getBytes());    // 内存输入流
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();    // 内存输出流
+        int temp = 0;
+        while ((temp = bis.read()) != -1) {
+            bos.write(Character.toLowerCase((char) temp));
+        }
+        bis.close();
+        bos.close();
+        System.out.println(bos.toString());
+
+    }
+
+
 }
 
 class A implements Serializable {
